@@ -7,16 +7,13 @@ using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Configure SQLite Database
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Enable CORS (Allow frontend requests)
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -25,7 +22,6 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Middleware setup
 app.UseCors("AllowAll");
 app.UseRouting();
 app.UseAuthorization();
