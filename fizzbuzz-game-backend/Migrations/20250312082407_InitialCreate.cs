@@ -16,8 +16,7 @@ namespace fizzbuzz_game_backend.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    GameName = table.Column<string>(type: "TEXT", nullable: false),
-                    Author = table.Column<string>(type: "TEXT", nullable: false)
+                    Duration = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -32,8 +31,7 @@ namespace fizzbuzz_game_backend.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Divisor = table.Column<int>(type: "INTEGER", nullable: false),
                     ReplacementText = table.Column<string>(type: "TEXT", nullable: false),
-                    GameSessionId = table.Column<int>(type: "INTEGER", nullable: false),
-                    GameSessionId1 = table.Column<int>(type: "INTEGER", nullable: false)
+                    GameSessionId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -44,23 +42,12 @@ namespace fizzbuzz_game_backend.Migrations
                         principalTable: "GameSessions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_GameRules_GameSessions_GameSessionId1",
-                        column: x => x.GameSessionId1,
-                        principalTable: "GameSessions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_GameRules_GameSessionId",
                 table: "GameRules",
                 column: "GameSessionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_GameRules_GameSessionId1",
-                table: "GameRules",
-                column: "GameSessionId1");
         }
 
         /// <inheritdoc />

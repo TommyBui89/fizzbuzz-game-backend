@@ -14,7 +14,7 @@ namespace fizzbuzz_game_backend.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "9.0.2");
+            modelBuilder.HasAnnotation("ProductVersion", "9.0.3");
 
             modelBuilder.Entity("FizzBuzzGameBackend.Models.GameRule", b =>
                 {
@@ -28,9 +28,6 @@ namespace fizzbuzz_game_backend.Migrations
                     b.Property<int>("GameSessionId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("GameSessionId1")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("ReplacementText")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -38,8 +35,6 @@ namespace fizzbuzz_game_backend.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("GameSessionId");
-
-                    b.HasIndex("GameSessionId1");
 
                     b.ToTable("GameRules");
                 });
@@ -50,13 +45,8 @@ namespace fizzbuzz_game_backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Author")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("GameName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Duration")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -65,15 +55,9 @@ namespace fizzbuzz_game_backend.Migrations
 
             modelBuilder.Entity("FizzBuzzGameBackend.Models.GameRule", b =>
                 {
-                    b.HasOne("FizzBuzzGameBackend.Models.GameSession", null)
+                    b.HasOne("FizzBuzzGameBackend.Models.GameSession", "GameSession")
                         .WithMany("Rules")
                         .HasForeignKey("GameSessionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FizzBuzzGameBackend.Models.GameSession", "GameSession")
-                        .WithMany()
-                        .HasForeignKey("GameSessionId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

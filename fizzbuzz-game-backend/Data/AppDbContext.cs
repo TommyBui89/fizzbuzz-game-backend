@@ -1,5 +1,5 @@
-﻿using FizzBuzzGameBackend.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using FizzBuzzGameBackend.Models;
 
 namespace FizzBuzzGameBackend.Data
 {
