@@ -1,10 +1,11 @@
+using FizzBuzzGameBackend.Services;
 using FizzBuzzGameBackend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container
+// Add controllers & Swagger.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -12,27 +13,28 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "FizzBuzz API", Version = "v1" });
 });
 
-// Configure the DbContext with SQLite
-builder.Services.AddDbContext<AppDbContext>(options =>
+// Configure EF Core to use SQLite (connection string in appsettings.json).
+builder.Services.AddDbContext<FizzBuzzDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Add CORS policy
+// Configure CORS.
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
         policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
 
-// Build the app
+// Register session manager (in-memory).
+builder.Services.AddSingleton<GameSessionManager>();
+
 var app = builder.Build();
 
-// Use middleware
 app.UseCors("AllowAll");
 app.UseRouting();
 app.UseAuthorization();
 app.MapControllers();
 
-// Configure Swagger for API documentation
+// Configure Swagger.
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
@@ -40,10 +42,5 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = "swagger";
 });
 
-// Set the application to listen on port 8080
-app.Lifetime.ApplicationStarted.Register(() =>
-{
-    Console.WriteLine("Application started. Listening on http://localhost:8080");
-});
-
+// Run on http://localhost:8080
 app.Run("http://localhost:8080");
