@@ -30,10 +30,8 @@ namespace FizzBuzzGameBackend.Controllers
             if (game == null)
                 return NotFound("Game not found.");
 
-            // We are no longer using MaxNumber or a start time, but keep duration for the session
             var session = _sessionManager.CreateSession(gameId, durationSeconds);
 
-            // Return session info and the first number
             return Ok(new
             {
                 sessionId = session.SessionId,
@@ -49,15 +47,12 @@ namespace FizzBuzzGameBackend.Controllers
             if (!_sessionManager.TryGetSession(sessionId, out var session))
                 return NotFound("Session not found.");
 
-            // We removed the date/time check, so no expiry logic here
-
             var game = await _context.Games
                 .Include(g => g.Rules)
                 .FirstOrDefaultAsync(g => g.Id == session.GameId);
             if (game == null)
                 return NotFound("Game not found.");
 
-            // Validate answer
             var correctAnswer = FizzBuzzHelper.ComputeResult(session.LastNumber.Value, game.Rules);
             bool isCorrect = string.Equals(correctAnswer, request.Answer, StringComparison.OrdinalIgnoreCase);
 
@@ -66,7 +61,6 @@ namespace FizzBuzzGameBackend.Controllers
             else
                 session.IncorrectCount++;
 
-            // Generate next random number from the fixed range
             int? nextNumber = null;
             try
             {
@@ -74,7 +68,6 @@ namespace FizzBuzzGameBackend.Controllers
             }
             catch (Exception)
             {
-                // All numbers used
                 nextNumber = null;
             }
 

@@ -42,5 +42,4 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = "swagger";
 });
 
-// Run on http://localhost:8080
 app.Run("http://localhost:8080");

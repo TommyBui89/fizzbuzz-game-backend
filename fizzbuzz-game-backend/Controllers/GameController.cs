@@ -26,7 +26,6 @@ namespace FizzBuzzGameBackend.Controllers
                 .Include(g => g.Rules)
                 .ToListAsync();
 
-            // Map domain models to response DTOs
             var response = games.Select(game => new GameResponseDto
             {
                 Id = game.Id,
@@ -53,7 +52,6 @@ namespace FizzBuzzGameBackend.Controllers
             if (game == null)
                 return NotFound();
 
-            // Map to response DTO
             var response = new GameResponseDto
             {
                 Id = game.Id,
@@ -73,14 +71,13 @@ namespace FizzBuzzGameBackend.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateGame([FromBody] CreateGameDto dto)
         {
-            // No zero-divisor checks here, so zero divisors are allowed
             var game = new Game
             {
                 Name = dto.Name,
                 Author = dto.Author,
                 Rules = dto.Rules.Select(r => new Rule
                 {
-                    Divisor = r.Divisor,            // can be zero
+                    Divisor = r.Divisor,
                     ReplacementText = r.ReplacementText
                 }).ToList()
             };
@@ -88,7 +85,6 @@ namespace FizzBuzzGameBackend.Controllers
             _context.Games.Add(game);
             await _context.SaveChangesAsync();
 
-            // Build response DTO
             var response = new GameResponseDto
             {
                 Id = game.Id,
@@ -118,15 +114,13 @@ namespace FizzBuzzGameBackend.Controllers
             if (game == null)
                 return NotFound();
 
-            // Update main fields
             game.Name = dto.Name;
             game.Author = dto.Author;
 
-            // Remove old rules and add the new ones
             _context.Rules.RemoveRange(game.Rules);
             game.Rules = dto.Rules.Select(r => new Rule
             {
-                Divisor = r.Divisor, // can be zero
+                Divisor = r.Divisor,
                 ReplacementText = r.ReplacementText
             }).ToList();
 
