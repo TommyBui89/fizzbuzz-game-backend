@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace fizzbuzz_game_backend.Migrations
 {
     [DbContext(typeof(FizzBuzzDbContext))]
-    [Migration("20250312124938_InitialCreate")]
+    [Migration("20250313054646_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
